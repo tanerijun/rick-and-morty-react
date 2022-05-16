@@ -46,7 +46,9 @@ function List() {
             />
           ))
         )}
-        <button onClick={handleClick}>Load more...</button>
+        <button className="btn btn-dark" onClick={handleClick}>
+          Load more...
+        </button>
       </div>
     </div>
   );
