@@ -2,6 +2,7 @@ import { useState, useEffect } from 'react';
 import Character from './Character';
 
 function List() {
+  const [page, setPage] = useState(1);
   const [characters, setCharacters] = useState([]);
   const [loading, setLoading] = useState(true);
 
@@ -9,11 +10,13 @@ function List() {
   useEffect(() => {
     async function fetchData() {
       try {
-        const data = await fetch('https://rickandmortyapi.com/api/character');
+        const data = await fetch(
+          `https://rickandmortyapi.com/api/character?page=${page}`
+        );
 
         const { results } = await data.json();
 
-        setCharacters(results);
+        setCharacters([...characters, ...results]);
         setLoading(false);
       } catch (error) {
         console.error('Error from useEffect in List.js');
@@ -21,7 +24,11 @@ function List() {
     }
 
     fetchData();
-  }, [characters.length]);
+  }, [page]);
+
+  const handleClick = () => {
+    setPage(page + 1);
+  };
 
   return (
     <div>
@@ -39,6 +46,7 @@ function List() {
             />
           ))
         )}
+        <button onClick={handleClick}>Load more...</button>
       </div>
     </div>
   );
